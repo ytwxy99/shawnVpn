@@ -1,6 +1,6 @@
 # vtun
 
-A simple VPN written in Go.
+一款简单易用的VPN，基于Go语言开发。
 
 [EN](https://github.com/net-byte/vtun/blob/master/README.md) | [中文](https://github.com/net-byte/vtun/blob/master/README_CN.md)
 
@@ -10,13 +10,13 @@ A simple VPN written in Go.
 ![image](https://img.shields.io/badge/License-Anti--996-red)
 ![image](https://img.shields.io/github/downloads/net-byte/vtun/total.svg)
 
-# Features
-* VPN over udp
-* VPN over websocket
-* VPN over tls
-* VPN over grpc
+# 特性
+* 支持udp
+* 支持websocket
+* 支持tls
+* 支持grpc
 
-# Usage
+# 用法
 
 ```
 Usage of ./vtun:
@@ -62,89 +62,86 @@ Usage of ./vtun:
         dial timeout in seconds (default 30)
 ```
 
-## Build
+## 编译
 
 ```
 scripts/build.sh
 ```
 
-## Client on Linux
+## Linux客户端
 
 ```
 sudo ./vtun-linux-amd64 -l :3000 -s server-addr:3001 -c 172.16.0.10/24 -k 123456
 
 ```
 
-## Client on Linux with global mode(routing all your traffic to server)
+## Linux全局模式客户端（转发所有流量）
 
 ```
 sudo ./vtun-linux-amd64 -l :3000 -s server-addr:3001 -c 172.16.0.10/24 -k 123456 -g
 
 ```
-
-## Client on MacOS
+## MacOS客户端
 
 ```
 sudo ./vtun-darwin-amd64 -l :3000 -s server-addr:3001 -c 172.16.0.10/24 -k 123456 -g -sip 172.16.0.1
 
 ```
 
-## Client on Windows
-To use it with windows, you will need to download a [wintun.dll](https://www.wintun.net/) file in the app directory.  
-Open powershell as administrator and run cmd:
+## Windows客户端
+在windows上使用，你必须下载[wintun.dll](https://www.wintun.net/)文件并且把它放到当前应用目录下。  
+用管理员权限打开powershell并运行命令:
 ```
 .\vtun-win-amd64.exe  -l :3000 -s server-addr:3001 -c 172.16.0.10/24 -k 123456 -g -sip 172.16.0.1
 
 ```
 
-## Server on Linux
+## Linux服务端
 
 ```
 sudo ./vtun-linux-amd64 -S -l :3001 -c 172.16.0.1/24 -k 123456
 
 ```
 
-## Iptables setup on Linux
+## 在Linux上设置iptables
 
 ```
-  # Enable ipv4 and ipv6 forward
+  # 设置ipv4和ipv6流量转发
   vi /etc/sysctl.conf
   net.ipv4.ip_forward = 1
   net.ipv6.conf.all.forwarding=1
   sysctl -p /etc/sysctl.conf
-  # Masquerade outgoing traffic
+  # 设置NAT转发流量
   iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
   iptables -t nat -A POSTROUTING -o tun0 -j MASQUERADE
-  # Allow return traffic
   iptables -A INPUT -i eth0 -m state --state RELATED,ESTABLISHED -j ACCEPT
   iptables -A INPUT -i tun0 -m state --state RELATED,ESTABLISHED -j ACCEPT
-  # Forward everything
   iptables -A FORWARD -j ACCEPT
-
+  
 ```
 
 ## Docker
-[docker image](https://hub.docker.com/r/netbyte/vtun)
+[镜像](https://hub.docker.com/r/netbyte/vtun)
 
-### Run client
+### 运行客户端
 ```
 docker run  -d --privileged --restart=always --net=host --name vtun-client \
 netbyte/vtun -l :3000 -s server-addr:3001 -c 172.16.0.10/24 -k 123456
 ```
 
-### Run client with global mode
+### 运行全局模式客户端
 ```
 docker run  -d --privileged --restart=always --net=host --name vtun-client \
 netbyte/vtun -l :3000 -s server-addr:3001 -c 172.16.0.10/24 -k 123456 -g
 ```
 
-### Run server
+### 运行服务端
 ```
 docker run  -d --privileged --restart=always --net=host --name vtun-server \
 netbyte/vtun -S -l :3001 -c 172.16.0.1/24 -k 123456
 ```
 
-## Mobile client
+## 移动端
 
 ### [Android](https://github.com/net-byte/vTunnel)
 
