@@ -1,29 +1,30 @@
 package app
 
 import (
+	"github.com/net-byte/vtun/grpc"
+	"github.com/net-byte/vtun/tls"
+	"github.com/net-byte/vtun/udp"
+	"github.com/net-byte/vtun/ws"
 	"log"
 
 	"github.com/net-byte/vtun/common/cipher"
 	"github.com/net-byte/vtun/common/config"
 	"github.com/net-byte/vtun/common/netutil"
-	"github.com/net-byte/vtun/grpc"
-	"github.com/net-byte/vtun/tls"
 	"github.com/net-byte/vtun/tun"
-	"github.com/net-byte/vtun/udp"
-	"github.com/net-byte/vtun/ws"
 	"github.com/net-byte/water"
 )
 
 var _banner = `
-_                 
-__ __ | |_   _  _   _ _  
-\ V / |  _| | || | | ' \ 
- \_/   \__|  \_,_| |_||_|
-						 
-A simple VPN written in Go.
-%s
+    
+   /--/    | 
+  /  /     |        ---     
+    \  \   |---    /   \    \    /\    /   /\    /
+   /  /    |   |   \   /     \  /  \  /   /  \  / 
+  /__/     |   |    ---\\     \/    \/   /    \/
+
+Simple VPN written by shawn wang
+
 `
-var _srcUrl = "https://github.com/net-byte/vtun"
 
 // vtun app struct
 type Vtun struct {
@@ -34,17 +35,19 @@ type Vtun struct {
 
 // InitConfig initializes the config
 func (app *Vtun) InitConfig() {
-	log.Printf(_banner, _srcUrl)
-	log.Printf("vtun version %s", app.Version)
+	log.Printf(_banner)
 	if !app.Config.ServerMode {
+		// client mode
 		app.Config.LocalGateway = netutil.GetLocalGateway()
 	}
+	// 用这个 key 作为代理的权限认证
 	cipher.SetKey(app.Config.Key)
 	log.Printf("initialized config: %+v", app.Config)
 }
 
 // StartApp starts the app
 func (app *Vtun) StartApp() {
+	// 创建 tun 三层虚拟设备
 	app.Iface = tun.CreateTun(*app.Config)
 	switch app.Config.Protocol {
 	case "udp":

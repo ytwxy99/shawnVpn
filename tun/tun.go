@@ -1,19 +1,23 @@
 package tun
 
 import (
+	"github.com/net-byte/vtun/common/config"
+	"github.com/net-byte/vtun/common/netutil"
+	"github.com/net-byte/water"
 	"log"
 	"net"
 	"runtime"
 	"strconv"
-
-	"github.com/net-byte/vtun/common/config"
-	"github.com/net-byte/vtun/common/netutil"
-	"github.com/net-byte/water"
 )
 
 // CreateTun creates a tun interface
 func CreateTun(config config.Config) (iface *water.Interface) {
+	// refer: https://pkg.go.dev/github.com/net-byte/water
+
+	// DeviceType is the type for specifying device types.
+	// water.TUN 创建 tun 设备
 	c := water.Config{DeviceType: water.TUN}
+	// 默认 dn 不指定此处为空 只指定tun的cidr
 	if config.DeviceName != "" {
 		c.PlatformSpecificParams = water.PlatformSpecificParams{Name: config.DeviceName, Network: config.CIDR}
 	} else {
@@ -24,18 +28,31 @@ func CreateTun(config config.Config) (iface *water.Interface) {
 			c.PlatformSpecificParams = water.PlatformSpecificParams{Network: config.CIDR}
 		}
 	}
+
+	// 变量 c 的内容如下
+	// &{DeviceName: LocalAddr::3000 ServerAddr::3001 ServerIP:172.16.0.1 ServerIPv6:fced:9999::1
+	// DNSIP:8.8.8.8 CIDR:172.16.0.10/24 CIDRv6:fced:9999::9999/64 Key:freedom Protocol:udp
+	//  WebSocketPath:/freedom ServerMode:false GlobalMode:false Obfs:false Compress:false
+	//  MTU:1500 Timeout:30 LocalGateway:192.168.3.1 TLSCertificateFilePath:./certs/server.pem
+	//  TLSCertificateKeyFilePath:./certs/server.key TLSSni: TLSInsecureSkipVerify:false}
+
+	// New creates a new TUN/TAP interface using config.
 	iface, err := water.New(c)
 	if err != nil {
 		log.Fatalln("failed to create tun interface:", err)
 	}
 	log.Printf("interface created %v", iface.Name())
+
+	// 配置tun 设备  cidr mtu 等等
 	configTun(config, iface)
+
 	return iface
 }
 
 // ConfigTun configures the tun interface
 func configTun(config config.Config, iface *water.Interface) {
 	os := runtime.GOOS
+	// 获取 ipv4地址（比如：192.168.0.1)
 	ip, _, err := net.ParseCIDR(config.CIDR)
 	if err != nil {
 		log.Panicf("error cidr %v", config.CIDR)
@@ -44,17 +61,27 @@ func configTun(config config.Config, iface *water.Interface) {
 	if err != nil {
 		log.Panicf("error ipv6 cidr %v", config.CIDRv6)
 	}
+
 	if os == "linux" {
+		// 设置 mtu
 		netutil.ExecCmd("/sbin/ip", "link", "set", "dev", iface.Name(), "mtu", strconv.Itoa(config.MTU))
+		// 设置 cidr 172.16.0.10/24
 		netutil.ExecCmd("/sbin/ip", "addr", "add", config.CIDR, "dev", iface.Name())
+		// 设置 ipv6地址
 		netutil.ExecCmd("/sbin/ip", "-6", "addr", "add", config.CIDRv6, "dev", iface.Name())
+		// 设置 tun 卡 up
 		netutil.ExecCmd("/sbin/ip", "link", "set", "dev", iface.Name(), "up")
+
+		// client模式 config.ServerMode为 false； 启动参数-S 后，config.ServerMode为 true
 		if !config.ServerMode && config.GlobalMode {
+			// 主网卡的名字，一般为 eth0
 			physicalIface := netutil.GetInterface()
+			// 如果 -s 指定为 127.0.0.1:3301 则 host 为127.0.0.1
 			host, _, err := net.SplitHostPort(config.ServerAddr)
 			if err != nil {
 				log.Panic("error server address")
 			}
+			// 如果 -s 指定为 127.0.0.1:3301 则 serverIP 为127.0.0.1
 			serverIP := netutil.LookupIP(host)
 			if physicalIface != "" && serverIP != nil {
 				netutil.ExecCmd("/sbin/ip", "route", "add", "0.0.0.0/1", "dev", iface.Name())
@@ -75,6 +102,7 @@ func configTun(config config.Config, iface *water.Interface) {
 		netutil.ExecCmd("ifconfig", iface.Name(), "inet", ip.String(), gateway, "up")
 		netutil.ExecCmd("ifconfig", iface.Name(), "inet6", ipv6.String(), gateway6, "up")
 		if !config.ServerMode && config.GlobalMode {
+			// 取主网卡 eth0
 			physicalIface := netutil.GetInterface()
 			host, _, err := net.SplitHostPort(config.ServerAddr)
 			if err != nil {

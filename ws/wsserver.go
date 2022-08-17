@@ -31,6 +31,7 @@ func StartServer(iface *water.Interface, config config.Config) {
 		if !checkPermission(w, r, config) {
 			return
 		}
+		// upgrade from http req to websokect req
 		wsconn, _, _, err := ws.UpgradeHTTP(r, w)
 		if err != nil {
 			log.Printf("[server] failed to upgrade http %v", err)
@@ -39,6 +40,7 @@ func StartServer(iface *water.Interface, config config.Config) {
 		toServer(config, wsconn, iface)
 	})
 
+	// url proxy
 	http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
 		io.WriteString(w, "Hello,世界!")
 	})
@@ -134,6 +136,7 @@ func StartServer(iface *water.Interface, config config.Config) {
 
 // checkPermission checks the permission of the request
 func checkPermission(w http.ResponseWriter, req *http.Request, config config.Config) bool {
+	// 客户端指定的，测试时候用的是123456，这块可以考虑用户名密码形式
 	key := req.Header.Get("key")
 	if key != config.Key {
 		w.WriteHeader(http.StatusForbidden)
@@ -179,9 +182,11 @@ func toServer(config config.Config, wsconn net.Conn, iface *water.Interface) {
 		if config.Compress {
 			b, _ = snappy.Decode(nil, b)
 		}
+		// 开启 obfs 混淆，走 http 混淆方案
 		if config.Obfs {
 			b = cipher.XOR(b)
 		}
+		// netutil.GetSrcKey 可以拿到 packet 包的 ip 地址，用于做 cache
 		if key := netutil.GetSrcKey(b); key != "" {
 			cache.GetCache().Set(key, wsconn, 10*time.Minute)
 			counter.IncrReadBytes(len(b))
