@@ -1,4 +1,4 @@
-module github.com/net-byte/vtun
+module github.com/shawnvpn
 
 go 1.16
 
