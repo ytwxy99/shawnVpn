@@ -9,10 +9,10 @@ import (
 
 	"github.com/golang/snappy"
 	"github.com/net-byte/water"
-	"github.com/ytwxy99/shawnVpn/common/cache"
-	"github.com/ytwxy99/shawnVpn/common/cipher"
-	"github.com/ytwxy99/shawnVpn/common/config"
-	"github.com/ytwxy99/shawnVpn/common/counter"
+	"github.com/ytwxy99/shawnvpn/common/cache"
+	"github.com/ytwxy99/shawnvpn/common/cipher"
+	"github.com/ytwxy99/shawnvpn/common/config"
+	"github.com/ytwxy99/shawnvpn/common/counter"
 )
 
 // StartClient starts the tls client

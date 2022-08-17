@@ -7,8 +7,8 @@ import (
 	"strconv"
 
 	"github.com/net-byte/water"
-	"github.com/ytwxy99/shawnVpn/common/config"
-	"github.com/ytwxy99/shawnVpn/common/netutil"
+	"github.com/ytwxy99/shawnvpn/common/config"
+	"github.com/ytwxy99/shawnvpn/common/netutil"
 )
 
 // CreateTun creates a tun interface
