@@ -6,9 +6,9 @@ import (
 
 	"github.com/golang/snappy"
 	"github.com/net-byte/water"
-	"github.com/shawnVpn/common/cipher"
-	"github.com/shawnVpn/common/config"
-	"github.com/shawnVpn/common/counter"
+	"github.com/ytwxy99/shawnVpn/common/cipher"
+	"github.com/ytwxy99/shawnVpn/common/config"
+	"github.com/ytwxy99/shawnVpn/common/counter"
 )
 
 // StartClient starts the udp client

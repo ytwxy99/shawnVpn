@@ -8,11 +8,11 @@ import (
 	"github.com/gobwas/ws/wsutil"
 	"github.com/golang/snappy"
 	"github.com/net-byte/water"
-	"github.com/shawnVpn/common/cache"
-	"github.com/shawnVpn/common/cipher"
-	"github.com/shawnVpn/common/config"
-	"github.com/shawnVpn/common/counter"
-	"github.com/shawnVpn/common/netutil"
+	"github.com/ytwxy99/shawnVpn/common/cache"
+	"github.com/ytwxy99/shawnVpn/common/cipher"
+	"github.com/ytwxy99/shawnVpn/common/config"
+	"github.com/ytwxy99/shawnVpn/common/counter"
+	"github.com/ytwxy99/shawnVpn/common/netutil"
 )
 
 // StartClient starts the ws client

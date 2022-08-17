@@ -4,14 +4,14 @@ import (
 	"log"
 
 	"github.com/net-byte/water"
-	"github.com/shawnVpn/common/cipher"
-	"github.com/shawnVpn/common/config"
-	"github.com/shawnVpn/common/netutil"
-	"github.com/shawnVpn/grpc"
-	"github.com/shawnVpn/tls"
-	"github.com/shawnVpn/tun"
-	"github.com/shawnVpn/udp"
-	"github.com/shawnVpn/ws"
+	"github.com/ytwxy99/shawnVpn/common/cipher"
+	"github.com/ytwxy99/shawnVpn/common/config"
+	"github.com/ytwxy99/shawnVpn/common/netutil"
+	"github.com/ytwxy99/shawnVpn/grpc"
+	"github.com/ytwxy99/shawnVpn/tls"
+	"github.com/ytwxy99/shawnVpn/tun"
+	"github.com/ytwxy99/shawnVpn/udp"
+	"github.com/ytwxy99/shawnVpn/ws"
 )
 
 var _banner = `

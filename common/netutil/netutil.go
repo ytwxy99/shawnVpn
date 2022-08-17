@@ -13,7 +13,7 @@ import (
 
 	"github.com/gobwas/ws"
 	"github.com/jackpal/gateway"
-	"github.com/shawnVpn/common/config"
+	"github.com/ytwxy99/shawnVpn/common/config"
 )
 
 // ConnectServer connects to the server with the given address.
