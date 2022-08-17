@@ -7,6 +7,8 @@ import (
 
 	"github.com/golang/snappy"
 	"github.com/net-byte/water"
+	"github.com/patrickmn/go-cache"
+
 	"github.com/ytwxy99/shawnvpn/common/cipher"
 	"github.com/ytwxy99/shawnvpn/common/config"
 	"github.com/ytwxy99/shawnvpn/common/counter"

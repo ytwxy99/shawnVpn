@@ -12,7 +12,9 @@ import (
 	"github.com/gobwas/ws"
 	"github.com/gobwas/ws/wsutil"
 	"github.com/golang/snappy"
+	"github.com/inhies/go-bytesize"
 	"github.com/net-byte/water"
+
 	"github.com/ytwxy99/shawnvpn/common/cache"
 	"github.com/ytwxy99/shawnvpn/common/cipher"
 	"github.com/ytwxy99/shawnvpn/common/config"
