@@ -6,9 +6,9 @@ import (
 	"runtime"
 	"strconv"
 
-	"github.com/net-byte/vtun/common/config"
-	"github.com/net-byte/vtun/common/netutil"
 	"github.com/net-byte/water"
+	"github.com/shawnVpn/common/config"
+	"github.com/shawnVpn/common/netutil"
 )
 
 // CreateTun creates a tun interface

@@ -6,12 +6,12 @@ import (
 	"time"
 
 	"github.com/golang/snappy"
-	"github.com/net-byte/vtun/common/cipher"
-	"github.com/net-byte/vtun/common/config"
-	"github.com/net-byte/vtun/common/counter"
-	"github.com/net-byte/vtun/common/netutil"
 	"github.com/net-byte/water"
 	"github.com/patrickmn/go-cache"
+	"github.com/shawnVpn/common/cipher"
+	"github.com/shawnVpn/common/config"
+	"github.com/shawnVpn/common/counter"
+	"github.com/shawnVpn/common/netutil"
 )
 
 // StartServer starts the udp server

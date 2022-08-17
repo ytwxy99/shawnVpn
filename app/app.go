@@ -3,27 +3,28 @@ package app
 import (
 	"log"
 
-	"github.com/net-byte/vtun/common/cipher"
-	"github.com/net-byte/vtun/common/config"
-	"github.com/net-byte/vtun/common/netutil"
-	"github.com/net-byte/vtun/grpc"
-	"github.com/net-byte/vtun/tls"
-	"github.com/net-byte/vtun/tun"
-	"github.com/net-byte/vtun/udp"
-	"github.com/net-byte/vtun/ws"
 	"github.com/net-byte/water"
+	"github.com/shawnVpn/common/cipher"
+	"github.com/shawnVpn/common/config"
+	"github.com/shawnVpn/common/netutil"
+	"github.com/shawnVpn/grpc"
+	"github.com/shawnVpn/tls"
+	"github.com/shawnVpn/tun"
+	"github.com/shawnVpn/udp"
+	"github.com/shawnVpn/ws"
 )
 
 var _banner = `
-_                 
-__ __ | |_   _  _   _ _  
-\ V / |  _| | || | | ' \ 
- \_/   \__|  \_,_| |_||_|
-						 
-A simple VPN written in Go.
-%s
+    
+   /--/    | 
+  /  /     |        ---     
+    \  \   |---    /   \    \    /\    /   /\    /
+   /  /    |   |   \   /     \  /  \  /   /  \  / 
+  /__/     |   |    ---\\     \/    \/   /    \/
+
+VPN written by shawn wang
+
 `
-var _srcUrl = "https://github.com/net-byte/vtun"
 
 // vtun app struct
 type Vtun struct {
@@ -34,8 +35,8 @@ type Vtun struct {
 
 // InitConfig initializes the config
 func (app *Vtun) InitConfig() {
-	log.Printf(_banner, _srcUrl)
-	log.Printf("vtun version %s", app.Version)
+	log.Printf(_banner)
+	log.Printf("ShawnVpn version %s", app.Version)
 	if !app.Config.ServerMode {
 		app.Config.LocalGateway = netutil.GetLocalGateway()
 	}

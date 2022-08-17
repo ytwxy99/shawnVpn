@@ -6,8 +6,8 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/net-byte/vtun/app"
-	"github.com/net-byte/vtun/common/config"
+	"github.com/shawnVpn/app"
+	"github.com/shawnVpn/common/config"
 )
 
 var _version = "v1.6.5"

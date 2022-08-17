@@ -6,16 +6,16 @@ import (
 	"time"
 
 	"github.com/golang/snappy"
-	"github.com/net-byte/vtun/grpc/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 
-	"github.com/net-byte/vtun/common/cache"
-	"github.com/net-byte/vtun/common/cipher"
-	"github.com/net-byte/vtun/common/config"
-	"github.com/net-byte/vtun/common/counter"
-	"github.com/net-byte/vtun/common/netutil"
 	"github.com/net-byte/water"
+	"github.com/shawnVpn/common/cache"
+	"github.com/shawnVpn/common/cipher"
+	"github.com/shawnVpn/common/config"
+	"github.com/shawnVpn/common/counter"
+	"github.com/shawnVpn/common/netutil"
+	"github.com/shawnVpn/grpc/proto"
 )
 
 // The StreamService is the implementation of the StreamServer interface
