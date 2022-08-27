@@ -37,6 +37,8 @@ func StartServer(iface *water.Interface, config config.Config) {
 			log.Printf("[server] failed to upgrade http %v", err)
 			return
 		}
+
+		log.Printf("Connected vpn, %v", r.RemoteAddr)
 		toServer(config, wsconn, iface)
 	})
 
