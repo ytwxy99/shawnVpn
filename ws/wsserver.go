@@ -38,7 +38,7 @@ func StartServer(iface *water.Interface, config config.Config) {
 			return
 		}
 
-		log.Printf("Connected vpn, %v", r.RemoteAddr, r.URL)
+		log.Printf("Connected vpn, %v", r.RemoteAddr)
 		toServer(config, wsconn, iface)
 	})
 
